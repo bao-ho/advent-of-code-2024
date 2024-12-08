@@ -109,9 +109,6 @@ visitedArray.forEach((visitedPosition) => {
   visited = new Set();
   direction = "up";
   for (let k = 0; true; k++) {
-    if (count > 150) {
-      break;
-    }
     const [x, y] = pos;
     if (direction === "up") {
       if (y === 0) {
@@ -120,7 +117,6 @@ visitedArray.forEach((visitedPosition) => {
       if (currentMap[y - 1][x]) {
         const nextStep = `${JSON.stringify(pos)}${direction}`;
         if (visited.has(nextStep)) {
-          console.log(j, i);
           count += 1;
           break;
         }
@@ -138,7 +134,6 @@ visitedArray.forEach((visitedPosition) => {
       if (currentMap[y][x + 1]) {
         const nextStep = `${JSON.stringify(pos)}${direction}`;
         if (visited.has(nextStep)) {
-          console.log(j, i);
           count += 1;
           break;
         }
@@ -156,7 +151,6 @@ visitedArray.forEach((visitedPosition) => {
       if (currentMap[y + 1][x]) {
         const nextStep = `${JSON.stringify(pos)}${direction}`;
         if (visited.has(nextStep)) {
-          console.log(j, i);
           count += 1;
           break;
         }
@@ -175,7 +169,6 @@ visitedArray.forEach((visitedPosition) => {
       if (currentMap[y][x - 1]) {
         const nextStep = `${JSON.stringify(pos)}${direction}`;
         if (visited.has(nextStep)) {
-          console.log(j, i);
           count += 1;
           break;
         }
