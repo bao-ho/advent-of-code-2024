@@ -10,13 +10,11 @@ const [mapString, moveStringWithNewliens] = stringInput.split("\n\n");
 const moveString = moveStringWithNewliens.replaceAll("\n", "");
 
 const rows = mapString.split("\n");
-const WIDTH = rows[0].length;
-const HEIGHT = rows.length;
 const map = [];
 let robot = { x: -1, y: -1 };
-for (let i = 0; i < HEIGHT; i++) {
+for (let i = 0; i < rows.length; i++) {
   const row = [];
-  for (let j = 0; j < WIDTH; j++) {
+  for (let j = 0; j < rows[0].length; j++) {
     const object = rows[i][j];
     switch (object) {
       case ".":
@@ -185,62 +183,28 @@ const updateMapAndRobot = (direction) => {
   } else {
     // up or down
     const { x, y } = robot;
-    if (direction === "^") {
-      const frontArea = map.slice(0, y).reverse();
-      const objectInfrontOfRobot = frontArea[0][x];
-      if (objectInfrontOfRobot === ".") {
-        moveRobot(direction);
-      } else if (objectInfrontOfRobot === "#") {
-        // do nothing
-      } else {
-        const movableObjects = [];
-        const X = objectInfrontOfRobot === "]" ? x - 1 : x + 1;
-        const c1 = isMovable(
-          robot,
-          frontArea,
-          movableObjects,
-          frontArea.length
-        );
-        const c2 = isMovable(
-          { x: X, y },
-          frontArea,
-          movableObjects,
-          frontArea.length
-        );
-        if (c1 && c2) {
-          updateFrontArea(frontArea, movableObjects);
-          copyFrontAreaToMap(direction, frontArea);
-          moveRobot(direction);
-        }
-      }
+    let frontArea;
+    if (direction === "^") frontArea = map.slice(0, y).reverse();
+    else frontArea = map.slice(y + 1);
+    const objectInfrontOfRobot = frontArea[0][x];
+    if (objectInfrontOfRobot === ".") {
+      moveRobot(direction);
+    } else if (objectInfrontOfRobot === "#") {
+      // do nothing
     } else {
-      // down
-      const frontArea = map.slice(y + 1);
-      const objectInfrontOfRobot = frontArea[0][x];
-      if (objectInfrontOfRobot === ".") {
+      const movableObjects = [];
+      const X = objectInfrontOfRobot === "]" ? x - 1 : x + 1;
+      const c1 = isMovable(robot, frontArea, movableObjects, frontArea.length);
+      const c2 = isMovable(
+        { x: X, y },
+        frontArea,
+        movableObjects,
+        frontArea.length
+      );
+      if (c1 && c2) {
+        updateFrontArea(frontArea, movableObjects);
+        copyFrontAreaToMap(direction, frontArea);
         moveRobot(direction);
-      } else if (objectInfrontOfRobot === "#") {
-        // do nothing
-      } else {
-        const movableObjects = [];
-        const X = objectInfrontOfRobot === "]" ? x - 1 : x + 1;
-        const c1 = isMovable(
-          robot,
-          frontArea,
-          movableObjects,
-          frontArea.length
-        );
-        const c2 = isMovable(
-          { x: X, y },
-          frontArea,
-          movableObjects,
-          frontArea.length
-        );
-        if (c1 && c2) {
-          updateFrontArea(frontArea, movableObjects);
-          copyFrontAreaToMap(direction, frontArea);
-          moveRobot(direction);
-        }
       }
     }
   }
@@ -248,31 +212,6 @@ const updateMapAndRobot = (direction) => {
 
 for (let i = 0; i < moveString.length; i++) {
   const direction = moveString[i];
-  // const { x, y } = robot;
-  // const currentMap = [];
-  // for (let i = 0; i < map.length; i++) {
-  //   const row = [];
-  //   for (let j = 0; j < map[0].length; j++) {
-  //     row.push(map[i][j]);
-  //   }
-  //   currentMap.push(row);
-  // }
-  // currentMap[y][x] = "@";
-  // let stringToWriteToFile = "";
-  // currentMap.forEach((row) => {
-  //   let rowString = "";
-  //   for (let i = 0; i < row.length; i++) {
-  //     rowString = `${rowString}${row[i]}`;
-  //   }
-  //   stringToWriteToFile = `${stringToWriteToFile}${rowString}\n`;
-  // });
-  // stringToWriteToFile = `${stringToWriteToFile}${direction}, ${i}`;
-  // if (i > 7364 && i < 7368) {
-  //   fs.writeFileSync(`${currentDir}/output${i}.txt`, stringToWriteToFile, {
-  //     encoding: "utf8",
-  //   });
-  // }
-
   updateMapAndRobot(direction);
 }
 
