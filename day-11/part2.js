@@ -62,6 +62,8 @@ for (let j = 0; j < stones.length; j++) {
   sum += findNumberOfDescendants(stone, TOTAL_BLINKS);
 }
 
+console.time('doSomething')
 console.log(sum);
-console.log(totalRecursions);
-console.log(totalCacheHits);
+console.timeEnd('doSomething')
+// console.log(totalRecursions);
+// console.log(totalCacheHits);
